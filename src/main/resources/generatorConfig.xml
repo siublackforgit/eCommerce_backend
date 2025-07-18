@@ -21,9 +21,17 @@
         <sqlMapGenerator targetPackage="com.ecommerce.mapper" targetProject="src\main\resources"/>
         <javaClientGenerator type="XMLMAPPER" targetPackage="com.ecommerce.mapper"
                              targetProject="src\main\java"/>
-
-        <table tableName="USER">
+        <table tableName="USER" domainObjectName="User" >
             <generatedKey column="USER_ID" sqlStatement="MySql" identity="true"/>
         </table>
+
+<!--        <table tableName="%">-->
+<!--            &lt;!&ndash; ✅ CORRECT: Use ignoreTable instead &ndash;&gt;-->
+<!--            <ignoreTable tableName="innodb_%"/>-->
+<!--            <ignoreTable tableName="mysql.%"/>-->
+<!--            <ignoreTable tableName="sys.%"/>-->
+<!--            <ignoreTable tableName="performance_schema.%"/>-->
+<!--            <ignoreTable tableName="information_schema.%"/>-->
+<!--        </table>-->
     </context>
 </generatorConfiguration>
