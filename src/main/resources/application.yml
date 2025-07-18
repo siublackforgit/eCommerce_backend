@@ -7,3 +7,13 @@ spring:
     hikari:
       connection-timeout: 30000
       maximum-pool-size: 10
+server:
+  servlet:
+    session:
+      timeout: 1800  # Session timeout in seconds (30 mins)
+      cookie:
+        name: JSESSIONID
+#        http-only: true    # XSS protection
+#        secure: true       # HTTPS only in production
+        same-site: lax     # CSRF protection
+  port: 8080
