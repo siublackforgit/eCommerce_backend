@@ -1,4 +1,5 @@
 package com.ecommerce.config;
+import com.ecommerce.interceptors.SessionTimeoutInterceptor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -21,5 +22,17 @@ public class WebConfig implements WebMvcConfigurer {
                 .allowedHeaders("*")
                 .allowCredentials(true)
                 .maxAge(3600);
+    }
+
+
+    @Override
+    public void addInterceptors(InterceptorRegistry registry){
+        registry.addInterceptor(sessionTimeoutInterceptor())
+                .addPathPatterns("/**")
+                .excludePathPatterns("/login", "/logout");
+    }
+
+    public SessionTimeoutInterceptor sessionTimeoutInterceptor() {
+        return new SessionTimeoutInterceptor();
     }
 }
