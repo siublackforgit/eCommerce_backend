@@ -1,11 +1,14 @@
 package com.ecommerce.service.serviceImplement;
 
+import ch.qos.logback.core.util.StringUtil;
 import com.ecommerce.eNum.AuthType;
 import com.ecommerce.entity.User;
 import com.ecommerce.entity.UserAuth;
-import com.ecommerce.entity.UserExample;
 import com.ecommerce.mapper.UserAuthMapper;
+
+
 import com.ecommerce.mapper.UserMapper;
+import com.ecommerce.utils.TokenService;
 import org.apache.logging.log4j.LogManager;
 import com.ecommerce.constant.ResponseCode;
 import com.ecommerce.constant.ResultCode;
@@ -14,7 +17,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 public class UserServiceImplement  implements UserService {
@@ -23,6 +28,9 @@ public class UserServiceImplement  implements UserService {
 
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
+
+    @Autowired
+    TokenService tokenService;
 
     @Autowired
     UserMapper userMapper;
@@ -74,11 +82,21 @@ public class UserServiceImplement  implements UserService {
         //End validation
 
         User user = new User();
-        user.setUserName(userName);
+        user.setUserActive(false);
         user.setUserEmail(userEmail);
-        user.setUserActive(true);
-        user.setUserCreatedAt(new Date());
-        userMapper.insert(user);
+        user.setUserName(userName);
+        user.setUserEmailVerified(false);
+        String token = tokenService.generateVerificationToken();
+        if (token == null || token.trim().isEmpty()) {
+            logger.error("Failed to generate verification token for user: {}", userEmail);
+            return false;
+        }
+        user.setUserEmailVerificationToken(token);
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime expiresAt = now.plusHours(24);
+        Date expirationDate = java.sql.Timestamp.valueOf(expiresAt);
+        user.setUserEmailVerificationTokenExpiresAt(expirationDate);
+
 
         Long userId = user.getUserId();
         String hashedPassword = passwordEncoder.encode(userPassword);
