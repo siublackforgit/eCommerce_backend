@@ -21,12 +21,12 @@
         <sqlMapGenerator targetPackage="com.ecommerce.mapper" targetProject="src\main\resources"/>
         <javaClientGenerator type="XMLMAPPER" targetPackage="com.ecommerce.mapper"
                              targetProject="src\main\java"/>
-<!--        <table tableName="USER" domainObjectName="User" >-->
-<!--            <generatedKey column="USER_ID" sqlStatement="MySql" identity="true"/>-->
-<!--        </table>-->
-        <table tableName="userAuth" domainObjectName="userAuth" >
-            <generatedKey column="USERAUTH_ID" sqlStatement="MySql" identity="true"/>
+        <table tableName="USER" domainObjectName="User" >
+            <generatedKey column="USER_ID" sqlStatement="MySql" identity="true"/>
         </table>
+<!--        <table tableName="userAuth" domainObjectName="UserAuth" >-->
+<!--            <generatedKey column="USERAUTH_ID" sqlStatement="MySql" identity="true"/>-->
+<!--        </table>-->
 
 <!--        <table tableName="%">-->
 <!--            &lt;!&ndash; ✅ CORRECT: Use ignoreTable instead &ndash;&gt;-->
